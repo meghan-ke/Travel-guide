@@ -8,10 +8,10 @@ class Utils {
             // Expect CONFIG.COUNTRIES_API to be the REST Countries base (e.g. https://restcountries.com/v3.1)
             // Request only the fields our app needs to avoid providers that require a 'fields' query
             const FIELDS = [
-                'name', 'capital', 'population', 'region', 'flags', 'cca3', 'area', 'timezones', 'currencies', 'languages'
+                'name', 'capital', 'population', 'region', 'flags', 'cca3', 'area', 'timezones', 'currencies', 'languages', 
             ].join(',');
 
-            const response = await fetch(`${CONFIG.COUNTRIES_API}/all?fields=${encodeURIComponent(FIELDS)}`, {
+            const response = await fetch(`${CONFIG.COUNTRIES_API}/all?fields=${FIELDS}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -44,10 +44,10 @@ class Utils {
     static async fetchCountriesByName(name) {
         try {
             const FIELDS = [
-                'name', 'capital', 'population', 'region', 'flags', 'cca3', 'area', 'timezones', 'currencies', 'languages'
+                'name', 'capital', 'population', 'region', 'flags', 'cca3', 'area', 'timezones', 'currencies', 'languages', 
             ].join(',');
 
-            const response = await fetch(`${CONFIG.COUNTRIES_API}/name/${encodeURIComponent(name)}?fields=${encodeURIComponent(FIELDS)}`, {
+            const response = await fetch(`${CONFIG.COUNTRIES_API}/name/${encodeURIComponent(name)}?fields=${FIELDS}`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' }
             });
