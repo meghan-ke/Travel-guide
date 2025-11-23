@@ -130,6 +130,24 @@ class Utils {
             timeout = setTimeout(later, wait);
         };
     }
+
+    // Fetch a brief Wikipedia summary for a title (used by app)
+    static async fetchWikipediaSummary(title) {
+        try {
+            const endpoint = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
+            const resp = await fetch(endpoint, { headers: { 'Accept': 'application/json' } });
+            if (!resp.ok) return null;
+            const data = await resp.json();
+            return {
+                extract: data.extract || data.description || '',
+                thumbnail: data.thumbnail?.source || '',
+                pageUrl: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`
+            };
+        } catch (err) {
+            console.error('Error fetching Wikipedia summary:', err);
+            return null;
+        }
+    }
 }
 
 export { Utils };

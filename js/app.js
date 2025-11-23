@@ -1,6 +1,5 @@
 import { CONFIG } from './config.js';
 import { Utils } from './utils.js';
-import {Places} from './places.js';
 
 class TravelHubApp {
     constructor() {
@@ -264,9 +263,18 @@ class TravelHubApp {
         }
         
         // Get coordinates for places API
-        const lat = country?.capitalInfo?.latlng?.[0];
-        const lon = country?.capitalInfo?.latlng?.[1];
+        const lat = country?.latlng?.[0];
+        const lon = country?.latlng?.[1];
+        console.log('Coordinates for places:', lat, lon);
 
+        console.log('Full country object:', country);
+        console.log('latlng:', country?.latlng);
+        console.log('capitalInfo:', country?.capitalInfo);
+        console.log('All keys:', Object.keys(country));
+
+        // seeing what we get from the api 
+        //console.log('Full country object:', country);
+        //console.log('capitalInfo:', country?.capitalInfo);
 
         container.innerHTML = `
             <div class="country-detail-card">
@@ -311,26 +319,42 @@ class TravelHubApp {
                             ${languagesHTML}
                         </div>
                     </div>
-                    <div class="detail-section">
-                        <h3>Popular Places</h3>
-                        <div id="placesInfo" class="places-info">
-                            <p>Loading popular places...</p>
+                        <div class="detail-section">
+                            <h3>Country Summary</h3>
+                            <div id="wikiSummary" class="wiki-summary">
+                                <p>Loading summary...</p>
+                            </div>
                         </div>
-                    </div>
                 </div>
 
                 <div class="action-buttons">
                     <a href="countries.html" class="btn btn-secondary">Back to Countries</a>
                 </div>
             </div>
-        `; // Load places if we have coordinates
-        if (capital !== 'N/A') {
-            Places.displayPlaces(capital, lat, lon, 'placesInfo');
-        } else {
-            const placesElement = document.getElementById('placesInfo');
-            if (placesElement) {
-                placesElement.innerHTML = '<p>Location data not available</p>';
-            }
+        `;
+        // Load a short Wikipedia summary for the country or capital
+        const summaryTarget = document.getElementById('wikiSummary');
+        if (summaryTarget) {
+            const preferredTitle = (capital && capital !== 'N/A') ? capital : countryName;
+            Utils.fetchWikipediaSummary(preferredTitle).then(data => {
+                if (!data) {
+                    summaryTarget.innerHTML = '<p>Summary not available.</p>';
+                    return;
+                }
+                const { extract, thumbnail, pageUrl } = data;
+                summaryTarget.innerHTML = `
+                    <div class="wiki-card">
+                        ${thumbnail ? `<img src="${thumbnail}" alt="${preferredTitle} thumbnail" class="wiki-thumb">` : ''}
+                        <div class="wiki-text">
+                            <p>${extract}</p>
+                            <p><a href="${pageUrl}" target="_blank" rel="noopener">Read more on Wikipedia</a></p>
+                        </div>
+                    </div>
+                `;
+            }).catch(err => {
+                console.error('Error fetching wiki summary:', err);
+                summaryTarget.innerHTML = '<p>Summary not available.</p>';
+            });
         }
     }
 
