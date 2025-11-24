@@ -81,7 +81,7 @@ Contributing
 4. Open a pull request
 
 Demo video 
-link : https://youtube.com/shorts/wt6OiM5Yfeo?feature=share
+link : https://youtube.com/shorts/X30nSmza9QM?feature=share
 
 License
 This is licensed with an ssl cetificate which makes it accessible securely over the internet.
