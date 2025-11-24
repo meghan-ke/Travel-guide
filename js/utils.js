@@ -68,18 +68,18 @@ class Utils {
     }
 
     // Fetch weather for a city
-    static async fetchWeather(cityName) {
-        try {
-            const response = await fetch(
-                `${CONFIG.WEATHER_API}?q=${cityName}&appid=${CONFIG.WEATHER_API_KEY}&units=metric`
-            );
-            if (!response.ok) throw new Error('Weather data not available');
-            return await response.json();
-        } catch (error) {
-            console.error(`Error fetching weather for ${cityName}:`, error);
-            throw error;
-        }
-    }
+    // static async fetchWeather(cityName) {
+    //     try {
+    //         const response = await fetch(
+    //             `${CONFIG.WEATHER_API}?q=${cityName}&appid=${CONFIG.WEATHER_API_KEY}&units=metric`
+    //         );
+    //         if (!response.ok) throw new Error('Weather data not available');
+    //         return await response.json();
+    //     } catch (error) {
+    //         console.error(`Error fetching weather for ${cityName}:`, error);
+    //         throw error;
+    //     }
+    // }
 
     // Get popular countries
     static getPopularCountries(allCountries) {
@@ -110,9 +110,7 @@ class Utils {
                     <p><strong>Capital:</strong> ${country.capital ? country.capital[0] : 'N/A'}</p>
                     <p><strong>Population:</strong> ${country.population.toLocaleString()}</p>
                     <p><strong>Languages:</strong> ${country.languages ? Object.values(country.languages).join(', ') : 'N/A'}</p>
-                    <div class="weather-info" id="weather-${countryId}">
-                        <p>Loading weather...</p>
-                    </div>
+                    
                 </div>
             </div>
         `;
